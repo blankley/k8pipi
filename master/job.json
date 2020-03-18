@@ -1,0 +1,35 @@
+{
+  "kind": "Job",
+  "apiVersion": "batch/v1",
+  "metadata": {
+    "name": "calculate-pi"
+  },
+  "spec": {
+     "completion": 1,
+     "parallelism": 1,
+     "backoffLimit": 5,
+     "activeDeadlineSeconds": 3600,
+     "template": {
+        "spec": {
+           "containers": [
+		{
+                  "name": "pi-thon",
+                  "image": "blankley/k8pipi",
+                  "command": [ "./pi_sim.R", "test", "0", "10000000", "redis.default" ],
+	          "resources": {
+                      "requests": {
+                         "memory" : "256Mi",
+                         "cpu": "1"
+                      },
+                      "limits" : {
+                         "memory" : "512Mi",
+                         "cpu": "1"
+                      }
+                  }
+		}
+	   ],
+	   "restartPolicy": "Never"
+	}
+     }
+  }
+}

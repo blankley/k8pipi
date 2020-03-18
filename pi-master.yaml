@@ -1,0 +1,28 @@
+kind: Job
+apiVersion: batch/v1
+metadata:
+  name: calculate-pi-master
+  namespace: pi
+spec:
+  completions: 1
+  parallelism: 1
+  backoffLimit: 5
+  activeDeadlineSeconds: 3600
+  template:
+    spec:
+      containers:
+      - name: pi-master
+        image: blankley/k8pipi-master
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "10m"
+          limits:
+            memory: "512Mi"
+            cpu: "1"
+        env:
+        - name: "API_KEY"
+          value: "api from your .kube/config file"
+        - name: "CONFIG_FILE"
+          value: "pi_sim_config10.json"
+      restartPolicy: Never
